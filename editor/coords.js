@@ -17,8 +17,10 @@ import {getTransformList} from './svgtransformlist.js';
 const $ = jQuery;
 
 // this is how we map paths to our preferred relative segment types
-const pathMap = [0, 'z', 'M', 'm', 'L', 'l', 'C', 'c', 'Q', 'q', 'A', 'a',
-  'H', 'h', 'V', 'v', 'S', 's', 'T', 't'];
+const pathMap = [
+  0, 'z', 'M', 'm', 'L', 'l', 'C', 'c', 'Q', 'q', 'A', 'a',
+  'H', 'h', 'V', 'v', 'S', 's', 'T', 't'
+];
 
 /**
  * @interface module:coords.EditorContext
@@ -40,16 +42,18 @@ let editorContext_ = null;
 
 /**
 * @function module:coords.init
-* @param {module:coords.EditorContext} editorContext
+* @param {module:svgcanvas.SvgCanvas#event:pointsAdded} editorContext
+* @returns {void}
 */
 export const init = function (editorContext) {
   editorContext_ = editorContext;
 };
 
 /**
- * Applies coordinate changes to an element based on the given matrix
+ * Applies coordinate changes to an element based on the given matrix.
  * @function module:coords.remapElement
  * @implements {module:path.EditorContext#remapElement}
+ * @returns {void}
 */
 export const remapElement = function (selected, changes, m) {
   const remap = function (x, y) { return transformPoint(x, y, m); },
@@ -58,9 +62,9 @@ export const remapElement = function (selected, changes, m) {
     doSnapping = editorContext_.getGridSnapping() && selected.parentNode.parentNode.localName === 'svg',
     finishUp = function () {
       if (doSnapping) {
-        for (const o in changes) {
-          changes[o] = snapToGrid(changes[o]);
-        }
+        Object.entries(changes).forEach(([o, value]) => {
+          changes[o] = snapToGrid(value);
+        });
       }
       assignAttributes(selected, changes, 1000, true);
     },
@@ -296,8 +300,8 @@ export const remapElement = function (selected, changes, m) {
         break;
       case 11: // relative elliptical arc (a)
       case 10: // absolute elliptical arc (A)
-        dstr += seg.r1 + ',' + seg.r2 + ' ' + seg.angle + ' ' + (+seg.largeArcFlag) +
-          ' ' + (+seg.sweepFlag) + ' ' + seg.x + ',' + seg.y + ' ';
+        dstr += seg.r1 + ',' + seg.r2 + ' ' + seg.angle + ' ' + Number(seg.largeArcFlag) +
+          ' ' + Number(seg.sweepFlag) + ' ' + seg.x + ',' + seg.y + ' ';
         break;
       case 17: // relative smooth cubic (s)
       case 16: // absolute smooth cubic (S)

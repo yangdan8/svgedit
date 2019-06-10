@@ -1,4 +1,5 @@
 /* eslint-env qunit */
+/* globals SVGPathSeg */
 import '../editor/svgpathseg.js';
 import {NS} from '../editor/namespaces.js';
 import * as utilities from '../editor/utilities.js';
@@ -12,8 +13,14 @@ QUnit.log((details) => {
 });
 
 /**
+* @typedef {GenericArray} EditorContexts
+* @property {module:path.EditorContext} 0
+* @property {module:path.EditorContext} 1
+*/
+
+/**
 * @param {SVGSVGElement} [svg]
-* @returns {Array}
+* @returns {EditorContexts}
 */
 function getMockContexts (svg) {
   svg = svg || document.createElementNS(NS.SVG, 'svg');

@@ -1,8 +1,6 @@
 /* eslint-env node */
 import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-re';
-// import {minify} from 'uglify-es';
-// import {uglify} from 'rollup-plugin-uglify';
 
 const plugins = [
   replace({
@@ -35,6 +33,7 @@ window.svgEditor.modules = false;
   })
 ];
 
+/* eslint-disable import/no-anonymous-default-export */
 export default [
   {
     input: 'svgedit-config-es.js',
@@ -53,3 +52,4 @@ export default [
     plugins
   }
 ];
+/* eslint-enable import/no-anonymous-default-export */

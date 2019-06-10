@@ -1,3 +1,12 @@
+/* globals SVGPathSeg, SVGPathSegMovetoRel, SVGPathSegMovetoAbs,
+    SVGPathSegMovetoRel, SVGPathSegLinetoRel, SVGPathSegLinetoAbs,
+    SVGPathSegLinetoHorizontalRel, SVGPathSegLinetoHorizontalAbs,
+    SVGPathSegLinetoVerticalRel, SVGPathSegLinetoVerticalAbs,
+    SVGPathSegClosePath, SVGPathSegCurvetoCubicRel,
+    SVGPathSegCurvetoCubicAbs, SVGPathSegCurvetoCubicSmoothRel,
+    SVGPathSegCurvetoCubicSmoothAbs, SVGPathSegCurvetoQuadraticRel,
+    SVGPathSegCurvetoQuadraticAbs, SVGPathSegCurvetoQuadraticSmoothRel,
+    SVGPathSegCurvetoQuadraticSmoothAbs, SVGPathSegArcRel, SVGPathSegArcAbs */
 /**
 * SVGPathSeg API polyfill
 * https://github.com/progers/pathseg
@@ -7,6 +16,10 @@
 * including the latest spec changes which were implemented in Firefox 43 and
 * Chrome 46.
 */
+/* eslint-disable no-shadow, class-methods-use-this */
+// Linting: We avoid `no-shadow` as ESLint thinks these are still available globals
+// Linting: We avoid `class-methods-use-this` as this is a polyfill that must
+//   follow the conventions
 (() => {
 if (!('SVGPathSeg' in window)) {
   // Spec: https://www.w3.org/TR/SVG11/single-page.html#paths-InterfaceSVGPathSeg
@@ -85,8 +98,8 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegMovetoRel(undefined, this._x, this._y); }
   }
   Object.defineProperties(SVGPathSegMovetoRel.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegLinetoAbs extends SVGPathSeg {
@@ -100,8 +113,8 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegLinetoAbs(undefined, this._x, this._y); }
   }
   Object.defineProperties(SVGPathSegLinetoAbs.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegLinetoRel extends SVGPathSeg {
@@ -115,8 +128,8 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegLinetoRel(undefined, this._x, this._y); }
   }
   Object.defineProperties(SVGPathSegLinetoRel.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegCurvetoCubicAbs extends SVGPathSeg {
@@ -134,12 +147,12 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegCurvetoCubicAbs(undefined, this._x, this._y, this._x1, this._y1, this._x2, this._y2); }
   }
   Object.defineProperties(SVGPathSegCurvetoCubicAbs.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true },
-    x1: { get () { return this._x1; }, set (x1) { this._x1 = x1; this._segmentChanged(); }, enumerable: true },
-    y1: { get () { return this._y1; }, set (y1) { this._y1 = y1; this._segmentChanged(); }, enumerable: true },
-    x2: { get () { return this._x2; }, set (x2) { this._x2 = x2; this._segmentChanged(); }, enumerable: true },
-    y2: { get () { return this._y2; }, set (y2) { this._y2 = y2; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true},
+    x1: {get () { return this._x1; }, set (x1) { this._x1 = x1; this._segmentChanged(); }, enumerable: true},
+    y1: {get () { return this._y1; }, set (y1) { this._y1 = y1; this._segmentChanged(); }, enumerable: true},
+    x2: {get () { return this._x2; }, set (x2) { this._x2 = x2; this._segmentChanged(); }, enumerable: true},
+    y2: {get () { return this._y2; }, set (y2) { this._y2 = y2; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegCurvetoCubicRel extends SVGPathSeg {
@@ -157,12 +170,12 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegCurvetoCubicRel(undefined, this._x, this._y, this._x1, this._y1, this._x2, this._y2); }
   }
   Object.defineProperties(SVGPathSegCurvetoCubicRel.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true },
-    x1: { get () { return this._x1; }, set (x1) { this._x1 = x1; this._segmentChanged(); }, enumerable: true },
-    y1: { get () { return this._y1; }, set (y1) { this._y1 = y1; this._segmentChanged(); }, enumerable: true },
-    x2: { get () { return this._x2; }, set (x2) { this._x2 = x2; this._segmentChanged(); }, enumerable: true },
-    y2: { get () { return this._y2; }, set (y2) { this._y2 = y2; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true},
+    x1: {get () { return this._x1; }, set (x1) { this._x1 = x1; this._segmentChanged(); }, enumerable: true},
+    y1: {get () { return this._y1; }, set (y1) { this._y1 = y1; this._segmentChanged(); }, enumerable: true},
+    x2: {get () { return this._x2; }, set (x2) { this._x2 = x2; this._segmentChanged(); }, enumerable: true},
+    y2: {get () { return this._y2; }, set (y2) { this._y2 = y2; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegCurvetoQuadraticAbs extends SVGPathSeg {
@@ -178,10 +191,10 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegCurvetoQuadraticAbs(undefined, this._x, this._y, this._x1, this._y1); }
   }
   Object.defineProperties(SVGPathSegCurvetoQuadraticAbs.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true },
-    x1: { get () { return this._x1; }, set (x1) { this._x1 = x1; this._segmentChanged(); }, enumerable: true },
-    y1: { get () { return this._y1; }, set (y1) { this._y1 = y1; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true},
+    x1: {get () { return this._x1; }, set (x1) { this._x1 = x1; this._segmentChanged(); }, enumerable: true},
+    y1: {get () { return this._y1; }, set (y1) { this._y1 = y1; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegCurvetoQuadraticRel extends SVGPathSeg {
@@ -197,10 +210,10 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegCurvetoQuadraticRel(undefined, this._x, this._y, this._x1, this._y1); }
   }
   Object.defineProperties(SVGPathSegCurvetoQuadraticRel.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true },
-    x1: { get () { return this._x1; }, set (x1) { this._x1 = x1; this._segmentChanged(); }, enumerable: true },
-    y1: { get () { return this._y1; }, set (y1) { this._y1 = y1; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true},
+    x1: {get () { return this._x1; }, set (x1) { this._x1 = x1; this._segmentChanged(); }, enumerable: true},
+    y1: {get () { return this._y1; }, set (y1) { this._y1 = y1; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegArcAbs extends SVGPathSeg {
@@ -219,13 +232,13 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegArcAbs(undefined, this._x, this._y, this._r1, this._r2, this._angle, this._largeArcFlag, this._sweepFlag); }
   }
   Object.defineProperties(SVGPathSegArcAbs.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true },
-    r1: { get () { return this._r1; }, set (r1) { this._r1 = r1; this._segmentChanged(); }, enumerable: true },
-    r2: { get () { return this._r2; }, set (r2) { this._r2 = r2; this._segmentChanged(); }, enumerable: true },
-    angle: { get () { return this._angle; }, set (angle) { this._angle = angle; this._segmentChanged(); }, enumerable: true },
-    largeArcFlag: { get () { return this._largeArcFlag; }, set (largeArcFlag) { this._largeArcFlag = largeArcFlag; this._segmentChanged(); }, enumerable: true },
-    sweepFlag: { get () { return this._sweepFlag; }, set (sweepFlag) { this._sweepFlag = sweepFlag; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true},
+    r1: {get () { return this._r1; }, set (r1) { this._r1 = r1; this._segmentChanged(); }, enumerable: true},
+    r2: {get () { return this._r2; }, set (r2) { this._r2 = r2; this._segmentChanged(); }, enumerable: true},
+    angle: {get () { return this._angle; }, set (angle) { this._angle = angle; this._segmentChanged(); }, enumerable: true},
+    largeArcFlag: {get () { return this._largeArcFlag; }, set (largeArcFlag) { this._largeArcFlag = largeArcFlag; this._segmentChanged(); }, enumerable: true},
+    sweepFlag: {get () { return this._sweepFlag; }, set (sweepFlag) { this._sweepFlag = sweepFlag; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegArcRel extends SVGPathSeg {
@@ -244,13 +257,13 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegArcRel(undefined, this._x, this._y, this._r1, this._r2, this._angle, this._largeArcFlag, this._sweepFlag); }
   }
   Object.defineProperties(SVGPathSegArcRel.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true },
-    r1: { get () { return this._r1; }, set (r1) { this._r1 = r1; this._segmentChanged(); }, enumerable: true },
-    r2: { get () { return this._r2; }, set (r2) { this._r2 = r2; this._segmentChanged(); }, enumerable: true },
-    angle: { get () { return this._angle; }, set (angle) { this._angle = angle; this._segmentChanged(); }, enumerable: true },
-    largeArcFlag: { get () { return this._largeArcFlag; }, set (largeArcFlag) { this._largeArcFlag = largeArcFlag; this._segmentChanged(); }, enumerable: true },
-    sweepFlag: { get () { return this._sweepFlag; }, set (sweepFlag) { this._sweepFlag = sweepFlag; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true},
+    r1: {get () { return this._r1; }, set (r1) { this._r1 = r1; this._segmentChanged(); }, enumerable: true},
+    r2: {get () { return this._r2; }, set (r2) { this._r2 = r2; this._segmentChanged(); }, enumerable: true},
+    angle: {get () { return this._angle; }, set (angle) { this._angle = angle; this._segmentChanged(); }, enumerable: true},
+    largeArcFlag: {get () { return this._largeArcFlag; }, set (largeArcFlag) { this._largeArcFlag = largeArcFlag; this._segmentChanged(); }, enumerable: true},
+    sweepFlag: {get () { return this._sweepFlag; }, set (sweepFlag) { this._sweepFlag = sweepFlag; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegLinetoHorizontalAbs extends SVGPathSeg {
@@ -262,7 +275,7 @@ if (!('SVGPathSeg' in window)) {
     _asPathString () { return this.pathSegTypeAsLetter + ' ' + this._x; }
     clone () { return new SVGPathSegLinetoHorizontalAbs(undefined, this._x); }
   }
-  Object.defineProperty(SVGPathSegLinetoHorizontalAbs.prototype, 'x', { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true });
+  Object.defineProperty(SVGPathSegLinetoHorizontalAbs.prototype, 'x', {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true});
 
   class SVGPathSegLinetoHorizontalRel extends SVGPathSeg {
     constructor (owningPathSegList, x) {
@@ -273,7 +286,7 @@ if (!('SVGPathSeg' in window)) {
     _asPathString () { return this.pathSegTypeAsLetter + ' ' + this._x; }
     clone () { return new SVGPathSegLinetoHorizontalRel(undefined, this._x); }
   }
-  Object.defineProperty(SVGPathSegLinetoHorizontalRel.prototype, 'x', { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true });
+  Object.defineProperty(SVGPathSegLinetoHorizontalRel.prototype, 'x', {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true});
 
   class SVGPathSegLinetoVerticalAbs extends SVGPathSeg {
     constructor (owningPathSegList, y) {
@@ -284,7 +297,7 @@ if (!('SVGPathSeg' in window)) {
     _asPathString () { return this.pathSegTypeAsLetter + ' ' + this._y; }
     clone () { return new SVGPathSegLinetoVerticalAbs(undefined, this._y); }
   }
-  Object.defineProperty(SVGPathSegLinetoVerticalAbs.prototype, 'y', { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true });
+  Object.defineProperty(SVGPathSegLinetoVerticalAbs.prototype, 'y', {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true});
 
   class SVGPathSegLinetoVerticalRel extends SVGPathSeg {
     constructor (owningPathSegList, y) {
@@ -295,7 +308,7 @@ if (!('SVGPathSeg' in window)) {
     _asPathString () { return this.pathSegTypeAsLetter + ' ' + this._y; }
     clone () { return new SVGPathSegLinetoVerticalRel(undefined, this._y); }
   }
-  Object.defineProperty(SVGPathSegLinetoVerticalRel.prototype, 'y', { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true });
+  Object.defineProperty(SVGPathSegLinetoVerticalRel.prototype, 'y', {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true});
 
   class SVGPathSegCurvetoCubicSmoothAbs extends SVGPathSeg {
     constructor (owningPathSegList, x, y, x2, y2) {
@@ -310,10 +323,10 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegCurvetoCubicSmoothAbs(undefined, this._x, this._y, this._x2, this._y2); }
   }
   Object.defineProperties(SVGPathSegCurvetoCubicSmoothAbs.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true },
-    x2: { get () { return this._x2; }, set (x2) { this._x2 = x2; this._segmentChanged(); }, enumerable: true },
-    y2: { get () { return this._y2; }, set (y2) { this._y2 = y2; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true},
+    x2: {get () { return this._x2; }, set (x2) { this._x2 = x2; this._segmentChanged(); }, enumerable: true},
+    y2: {get () { return this._y2; }, set (y2) { this._y2 = y2; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegCurvetoCubicSmoothRel extends SVGPathSeg {
@@ -329,10 +342,10 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegCurvetoCubicSmoothRel(undefined, this._x, this._y, this._x2, this._y2); }
   }
   Object.defineProperties(SVGPathSegCurvetoCubicSmoothRel.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true },
-    x2: { get () { return this._x2; }, set (x2) { this._x2 = x2; this._segmentChanged(); }, enumerable: true },
-    y2: { get () { return this._y2; }, set (y2) { this._y2 = y2; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true},
+    x2: {get () { return this._x2; }, set (x2) { this._x2 = x2; this._segmentChanged(); }, enumerable: true},
+    y2: {get () { return this._y2; }, set (y2) { this._y2 = y2; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegCurvetoQuadraticSmoothAbs extends SVGPathSeg {
@@ -346,8 +359,8 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegCurvetoQuadraticSmoothAbs(undefined, this._x, this._y); }
   }
   Object.defineProperties(SVGPathSegCurvetoQuadraticSmoothAbs.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true}
   });
 
   class SVGPathSegCurvetoQuadraticSmoothRel extends SVGPathSeg {
@@ -361,8 +374,8 @@ if (!('SVGPathSeg' in window)) {
     clone () { return new SVGPathSegCurvetoQuadraticSmoothRel(undefined, this._x, this._y); }
   }
   Object.defineProperties(SVGPathSegCurvetoQuadraticSmoothRel.prototype, {
-    x: { get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true },
-    y: { get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true }
+    x: {get () { return this._x; }, set (x) { this._x = x; this._segmentChanged(); }, enumerable: true},
+    y: {get () { return this._y; }, set (y) { this._y = y; this._segmentChanged(); }, enumerable: true}
   });
 
   // Add createSVGPathSeg* functions to SVGPathElement.
@@ -443,7 +456,7 @@ if (!('SVGPathSeg' in window)) {
 // The second check for appendItem is specific to Firefox 59+ which removed only parts of the
 // SVGPathSegList API (e.g., appendItem). In this case we need to re-implement the entire API
 // so the polyfill data (i.e., _list) is used throughout.
-if (!('SVGPathSegList' in window) || !('appendItem' in SVGPathSegList.prototype)) {
+if (!('SVGPathSegList' in window) || !('appendItem' in window.SVGPathSegList.prototype)) {
   // Spec: https://www.w3.org/TR/SVG11/single-page.html#paths-InterfaceSVGPathSegList
   class SVGPathSegList {
     constructor (pathElement) {
@@ -582,7 +595,7 @@ if (!('SVGPathSegList' in window) || !('appendItem' in SVGPathSegList.prototype)
         return [];
       }
 
-      const owningPathSegList = this;
+      const owningPathSegList = this; // eslint-disable-line consistent-this
 
       class Builder {
         constructor () {
@@ -791,7 +804,7 @@ if (!('SVGPathSegList' in window) || !('appendItem' in SVGPathSegList.prototype)
           number *= sign;
 
           if (exponent) {
-            number *= Math.pow(10, expsign * exponent);
+            number *= 10 ** (expsign * exponent);
           }
 
           if (startIndex === this._currentIndex) {
@@ -874,10 +887,10 @@ if (!('SVGPathSegList' in window) || !('appendItem' in SVGPathSegList.prototype)
           } case SVGPathSeg.PATHSEG_CURVETO_QUADRATIC_REL: {
             const points = {x1: this._parseNumber(), y1: this._parseNumber(), x: this._parseNumber(), y: this._parseNumber()};
             return new SVGPathSegCurvetoQuadraticRel(owningPathSegList, points.x, points.y, points.x1, points.y1);
-          } case SVGPathSeg.PATHSEG_CURVETO_QUADRATIC_ABS:
+          } case SVGPathSeg.PATHSEG_CURVETO_QUADRATIC_ABS: {
             const points = {x1: this._parseNumber(), y1: this._parseNumber(), x: this._parseNumber(), y: this._parseNumber()};
             return new SVGPathSegCurvetoQuadraticAbs(owningPathSegList, points.x, points.y, points.x1, points.y1);
-          case SVGPathSeg.PATHSEG_CURVETO_QUADRATIC_SMOOTH_REL:
+          } case SVGPathSeg.PATHSEG_CURVETO_QUADRATIC_SMOOTH_REL:
             return new SVGPathSegCurvetoQuadraticSmoothRel(owningPathSegList, this._parseNumber(), this._parseNumber());
           case SVGPathSeg.PATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS:
             return new SVGPathSegCurvetoQuadraticSmoothAbs(owningPathSegList, this._parseNumber(), this._parseNumber());
@@ -909,6 +922,21 @@ if (!('SVGPathSegList' in window) || !('appendItem' in SVGPathSegList.prototype)
 
       return builder.pathSegList;
     }
+
+    // STATIC
+    static _pathSegArrayAsString (pathSegArray) {
+      let string = '';
+      let first = true;
+      pathSegArray.forEach((pathSeg) => {
+        if (first) {
+          first = false;
+          string += pathSeg._asPathString();
+        } else {
+          string += ' ' + pathSeg._asPathString();
+        }
+      });
+      return string;
+    }
   }
 
   SVGPathSegList.prototype.classname = 'SVGPathSegList';
@@ -920,20 +948,6 @@ if (!('SVGPathSegList' in window) || !('appendItem' in SVGPathSegList.prototype)
     },
     enumerable: true
   });
-
-  SVGPathSegList._pathSegArrayAsString = function (pathSegArray) {
-    let string = '';
-    let first = true;
-    pathSegArray.forEach((pathSeg) => {
-      if (first) {
-        first = false;
-        string += pathSeg._asPathString();
-      } else {
-        string += ' ' + pathSeg._asPathString();
-      }
-    });
-    return string;
-  };
 
   // Add the pathSegList accessors to SVGPathElement.
   // Spec: https://www.w3.org/TR/SVG11/single-page.html#paths-InterfaceSVGAnimatedPathData
@@ -948,9 +962,9 @@ if (!('SVGPathSegList' in window) || !('appendItem' in SVGPathSegList.prototype)
       enumerable: true
     },
     // FIXME: The following are not implemented and simply return SVGPathElement.pathSegList.
-    normalizedPathSegList: { get () { return this.pathSegList; }, enumerable: true },
-    animatedPathSegList: { get () { return this.pathSegList; }, enumerable: true },
-    animatedNormalizedPathSegList: { get () { return this.pathSegList; }, enumerable: true }
+    normalizedPathSegList: {get () { return this.pathSegList; }, enumerable: true},
+    animatedPathSegList: {get () { return this.pathSegList; }, enumerable: true},
+    animatedNormalizedPathSegList: {get () { return this.pathSegList; }, enumerable: true}
   });
   window.SVGPathSegList = SVGPathSegList;
 }

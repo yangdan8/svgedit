@@ -1,3 +1,5 @@
+// Todo: Move to own module (and have it import a modular base64 encoder)
+import {encode64} from '../utilities.js';
 /**
  * SVG Icon Loader 2.0
  *
@@ -94,35 +96,54 @@ $(function() {
 /**
  * @function module:jQuerySVGIcons.jQuerySVGIcons
  * @param {external:jQuery} $ Its keys include all icon IDs and the values, the icon as a jQuery object
+ * @returns {external:jQuery} The enhanced jQuery object
 */
-export default function ($) {
+export default function jQueryPluginSVGIcons ($) {
   const svgIcons = {};
 
   let fixIDs;
   /**
+   * Map of raster images with each key being the SVG icon ID
+   *   to replace, and the value the image file name
+   * @typedef {PlainObject.<string, string>} external:jQuery.svgIcons.Fallback
+  */
+  /**
+   * Map of raster images with each key being the SVG icon ID
+   *   whose `alt` will be set, and the value being the `alt` text
+   * @typedef {PlainObject.<string, string>} external:jQuery.svgIcons.Alts
+  */
+  /**
   * @function external:jQuery.svgIcons
   * @param {string} file The location of a local SVG or SVGz file
-  * @param {PlainObject} [options]
-  * @param {Float} [options.w] The icon widths
-  * @param {Float} [options.h] The icon heights
-  * @param {PlainObject.<string, string>} [options.fallback] List of raster images with each
-    key being the SVG icon ID to replace, and the value the image file name
-  * @param {string} [options.fallback_path] The path to use for all images
-    listed under "fallback"
-  * @param {boolean} [options.replace] If set to `true`, HTML elements will be replaced by,
-    rather than include the SVG icon.
-  * @param {PlainObject.<string, string>} [options.placement] List with selectors for keys and SVG icon ids
-    as values. This provides a custom method of adding icons.
-  * @param {PlainObject.<string, module:jQuerySVGIcons.Size>} [options.resize] List with selectors for keys and numbers
-    as values. This allows an easy way to resize specific icons.
-  * @param {module:jQuerySVGIcons.SVGIconsLoadedCallback} [options.callback] A function to call when all icons have been loaded.
-  * @param {boolean} [options.id_match=true] Automatically attempt to match SVG icon ids with
-    corresponding HTML id
-  * @param {boolean} [options.no_img] Prevent attempting to convert the icon into an `<img>`
-    element (may be faster, help for browser consistency)
-  * @param {boolean} [options.svgz] Indicate that the file is an SVGZ file, and thus not to
-    parse as XML. SVGZ files add compression benefits, but getting data from
-    them fails in Firefox 2 and older.
+  * @param {PlainObject} [opts]
+  * @param {Float} [opts.w] The icon widths
+  * @param {Float} [opts.h] The icon heights
+  * @param {external:jQuery.svgIcons.Fallback} [opts.fallback]
+  * @param {string} [opts.fallback_path] The path to use for all images
+  *   listed under "fallback"
+  * @param {boolean} [opts.replace] If set to `true`, HTML elements will
+  *   be replaced by, rather than include the SVG icon.
+  * @param {PlainObject.<string, string>} [opts.placement] Map with selectors
+  *   for keys and SVG icon ids as values. This provides a custom method of
+  *   adding icons.
+  * @param {PlainObject.<string, module:jQuerySVGIcons.Size>} [opts.resize] Map
+  *   with selectors for keys and numbers as values. This allows an easy way to
+  *   resize specific icons.
+  * @param {module:jQuerySVGIcons.SVGIconsLoadedCallback} [opts.callback] A
+  *   function to call when all icons have been loaded.
+  * @param {boolean} [opts.id_match=true] Automatically attempt to match
+  *   SVG icon ids with corresponding HTML id
+  * @param {boolean} [opts.no_img] Prevent attempting to convert the icon
+  *   into an `<img>` element (may be faster, help for browser consistency)
+  * @param {boolean} [opts.svgz] Indicate that the file is an SVGZ file, and
+  *   thus not to parse as XML. SVGZ files add compression benefits, but
+  *   getting data from them fails in Firefox 2 and older.
+  * @param {jQuery.svgIcons.Alts} [opts.alts] Map of images with each key
+  *   being the SVG icon ID whose `alt` will be set, and the value being
+  *   the `alt` text
+  * @param {string} [opts.testIconAlt="icon"] Alt text for the injected test image.
+  *   In case wish to ensure have one for accessibility
+  * @returns {void}
   */
   $.svgIcons = function (file, opts = {}) {
     const svgns = 'http://www.w3.org/2000/svg',
@@ -130,8 +151,10 @@ export default function ($) {
       iconW = opts.w || 24,
       iconH = opts.h || 24;
     let elems, svgdoc, testImg,
-      iconsMade = false, dataLoaded = false, loadAttempts = 0;
-    const isOpera = !!window.opera,
+      iconsMade = false,
+      dataLoaded = false,
+      loadAttempts = 0;
+    const isOpera = Boolean(window.opera),
       // ua = navigator.userAgent,
       // isSafari = (ua.includes('Safari/') && !ua.includes('Chrome/')),
       dataPre = 'data:image/svg+xml;charset=utf-8;base64,';
@@ -167,24 +190,28 @@ export default function ($) {
             $(function () {
               useFallback();
             });
-          } else {
-            if (err.responseText) {
-              svgdoc = parser.parseFromString(err.responseText, 'text/xml');
+          } else if (err.responseText) {
+            svgdoc = parser.parseFromString(err.responseText, 'text/xml');
 
-              if (!svgdoc.childNodes.length) {
-                $(useFallback);
-              }
-              $(function () {
-                getIcons('ajax');
-              });
-            } else {
+            if (!svgdoc.childNodes.length) {
               $(useFallback);
             }
+            $(function () {
+              getIcons('ajax');
+            });
+          } else {
+            $(useFallback);
           }
         }
       });
     }
 
+    /**
+     *
+     * @param {"ajax"|0|void} evt
+     * @param {boolean} [noWait]
+     * @returns {void}
+     */
     function getIcons (evt, noWait) {
       if (evt !== 'ajax') {
         if (dataLoaded) return;
@@ -214,7 +241,8 @@ export default function ($) {
         testImg = $(new Image()).attr({
           src: testSrc,
           width: 0,
-          height: 0
+          height: 0,
+          alt: opts.testIconAlt || 'icon'
         }).appendTo('body')
           .load(function () {
             // Safari 4 crashes, Opera and Chrome don't
@@ -229,12 +257,27 @@ export default function ($) {
       }
     }
 
+    /**
+     *
+     * @param {external:jQuery} target
+     * @param {external:jQuery} icon A wrapped `defs` or Image
+     * @param {string} id SVG icon ID
+     * @param {boolean} setID Whether to set the ID attribute (with `id`)
+     * @returns {void}
+     */
     function setIcon (target, icon, id, setID) {
       if (isOpera) icon.css('visibility', 'hidden');
       if (opts.replace) {
         if (setID) icon.attr('id', id);
         const cl = target.attr('class');
         if (cl) icon.attr('class', 'svg_icon ' + cl);
+        if (!target.alt) {
+          let alt = 'icon';
+          if (opts.alts) {
+            alt = opts.alts[id] || alt;
+          }
+          icon.attr('alt', alt);
+        }
         target.replaceWith(icon);
       } else {
         target.append(icon);
@@ -247,6 +290,11 @@ export default function ($) {
     }
 
     let holder;
+    /**
+     * @param {external:jQuery} icon A wrapped `defs` or Image
+     * @param {string} id SVG icon ID
+     * @returns {void}
+     */
     function addIcon (icon, id) {
       if (opts.id_match === undefined || opts.id_match !== false) {
         setIcon(holder, icon, id, true);
@@ -254,7 +302,13 @@ export default function ($) {
       svgIcons[id] = icon;
     }
 
-    function makeIcons (toImage, fallback) {
+    /**
+     *
+     * @param {boolean} [toImage]
+     * @param {external:jQuery.svgIcons.Fallback} [fallback]
+     * @returns {void}
+     */
+    function makeIcons (toImage = false, fallback) {
       if (iconsMade) return;
       if (opts.no_img) toImage = false;
 
@@ -267,13 +321,17 @@ export default function ($) {
         const path = opts.fallback_path || '';
         $.each(fallback, function (id, imgsrc) {
           holder = $('#' + id);
+          let alt = 'icon';
+          if (opts.alts) {
+            alt = opts.alts[id] || alt;
+          }
           const icon = $(new Image())
             .attr({
               class: 'svg_icon',
               src: path + imgsrc,
               width: iconW,
               height: iconH,
-              alt: 'icon'
+              alt
             });
 
           addIcon(icon, id);
@@ -288,7 +346,7 @@ export default function ($) {
           const svgroot = document.createElementNS(svgns, 'svg');
           // Per https://www.w3.org/TR/xml-names11/#defaulting, the namespace for
           // attributes should have no value.
-          svgroot.setAttributeNS(null, 'viewBox', [0, 0, iconW, iconH].join(' '));
+          svgroot.setAttribute('viewBox', [0, 0, iconW, iconH].join(' '));
 
           let svg = elem.getElementsByTagNameNS(svgns, 'svg')[0];
 
@@ -319,9 +377,15 @@ export default function ($) {
           let icon;
           if (toImage) {
             tempHolder.empty().append(svgroot);
-            const str = dataPre + encode64(unescape(encodeURIComponent(new XMLSerializer().serializeToString(svgroot))));
+            const str = dataPre + encode64(unescape(encodeURIComponent(
+              new XMLSerializer().serializeToString(svgroot)
+            )));
+            let alt = 'icon';
+            if (opts.alts) {
+              alt = opts.alts[id] || alt;
+            }
             icon = $(new Image())
-              .attr({class: 'svg_icon', src: str});
+              .attr({class: 'svg_icon', src: str, alt});
           } else {
             icon = fixIDs($(svgroot), i);
           }
@@ -357,13 +421,14 @@ export default function ($) {
       let idElems;
       if (isOpera) {
         idElems = defs.find('*').filter(function () {
-          return !!this.id;
+          return Boolean(this.id);
         });
       } else {
         idElems = defs.find('[id]');
       }
 
-      const allElems = svgEl[0].getElementsByTagName('*'), len = allElems.length;
+      const allElems = svgEl[0].getElementsByTagName('*'),
+        len = allElems.length;
 
       idElems.each(function (i) {
         const {id} = this;
@@ -407,48 +472,19 @@ export default function ($) {
       return svgEl;
     };
 
+    /**
+     * @returns {void}
+     */
     function useFallback () {
       if (file.includes('.svgz')) {
         const regFile = file.replace('.svgz', '.svg');
         if (window.console) {
-          console.log('.svgz failed, trying with .svg');
+          console.log('.svgz failed, trying with .svg'); // eslint-disable-line no-console
         }
         $.svgIcons(regFile, opts);
       } else if (opts.fallback) {
         makeIcons(false, opts.fallback);
       }
-    }
-
-    function encode64 (input) {
-      // base64 strings are 4/3 larger than the original string
-      if (window.btoa) return window.btoa(input);
-      const _keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-      const output = new Array(Math.floor((input.length + 2) / 3) * 4);
-
-      let i = 0, p = 0;
-      do {
-        const chr1 = input.charCodeAt(i++);
-        const chr2 = input.charCodeAt(i++);
-        const chr3 = input.charCodeAt(i++);
-
-        const enc1 = chr1 >> 2;
-        const enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-
-        let enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-        let enc4 = chr3 & 63;
-        if (isNaN(chr2)) {
-          enc3 = enc4 = 64;
-        } else if (isNaN(chr3)) {
-          enc4 = 64;
-        }
-
-        output[p++] = _keyStr.charAt(enc1);
-        output[p++] = _keyStr.charAt(enc2);
-        output[p++] = _keyStr.charAt(enc3);
-        output[p++] = _keyStr.charAt(enc4);
-      } while (i < input.length);
-
-      return output.join('');
     }
   };
 
@@ -474,14 +510,16 @@ export default function ($) {
   */
 
   /**
-  * If a Float is used, it will represent width and height. Arrays contain the width and height.
+  * If a Float is used, it will represent width and height. Arrays contain
+  *   the width and height.
   * @typedef {module:jQuerySVGIcons.Dimensions|Float} module:jQuerySVGIcons.Size
   */
 
   /**
   * @function external:jQuery.resizeSvgIcons
-  * @param {PlainObject.<string, module:jQuerySVGIcons.Size>} obj Object with selectors as keys. The values are sizes.
-  * @returns {undefined}
+  * @param {PlainObject.<string, module:jQuerySVGIcons.Size>} obj Object with
+  *   selectors as keys. The values are sizes.
+  * @returns {void}
   */
   $.resizeSvgIcons = function (obj) {
     // FF2 and older don't detect .svg_icon, so we change it detect svg elems instead
